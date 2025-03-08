@@ -24,10 +24,11 @@ class User(Database):
             return False
 
         hashed_password = self.hash_password(password)
+        status='active'
 
         try:
-            self.execute_query('''INSERT INTO "user" (name, email, password) VALUES (%s, %s, %s)''', 
-                               (name, email, hashed_password))
+            self.execute_query('''INSERT INTO "user" (name, email, password,status) VALUES (%s, %s, %s,%s)''', 
+                               (name, email, hashed_password,status))
             print("✅ Account created successfully")
             return True
         except psycopg2.IntegrityError as e:
