@@ -1,0 +1,23 @@
+{% include 'components/header.html' %}
+
+<div class="bg-[#343541] p-8 rounded-lg shadow-lg w-full max-w-md text-center text-white">
+    <h1 class="text-2xl font-bold">Create your account</h1>
+    <input type="text" placeholder="Name*" id="regName"
+        class="mt-4 w-full p-3 border border-gray-600 rounded-lg bg-[#40414F] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#10A37F]">
+    
+    <input type="email" placeholder="Email address*" id="regEmail"
+        class="mt-4 w-full p-3 border border-gray-600 rounded-lg bg-[#40414F] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#10A37F]">
+    
+    <input type="password" placeholder="Password" id="regPassword"
+        class="mt-4 w-full p-3 border border-gray-600 rounded-lg bg-[#40414F] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#10A37F]">
+    
+    <button id="btnCreateAccount" class="mt-4 w-full bg-[#10A37F] text-white py-3 rounded-lg font-medium hover:bg-[#1A7F64] transition-all">
+        Continue
+    </button>
+
+    <p class="mt-4 text-gray-300">
+        Already have an account? <a href="/" class="text-[#10A37F] font-medium hover:underline">Log in</a>
+    </p>
+</div>
+
+{% include 'components/footer.html' %}
