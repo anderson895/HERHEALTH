@@ -4,18 +4,19 @@ from flask import Flask, render_template, request, jsonify, session, redirect, u
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash
 from flask_mail import Mail, Message
+from user import User  
 
 app = Flask(__name__)
-app.secret_key = 'rksdjghsekuhh'  
+app.secret_key = 'rksdjghsekuhh'  # Consider using an environment variable for security
 CORS(app)
 
-# Flask-Mail Configuration (Replace with your SMTP details)
+# Flask-Mail Configuration (Replace with your SMTP details securely)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'  
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'angeladeniseflores199@gmail.com'  # Replace with your email
-app.config['MAIL_PASSWORD'] = 'rpbm yjls katl wcrt'  # Replace with your email password
-app.config['MAIL_DEFAULT_SENDER'] = 'angeladeniseflores199@gmail.com'
+app.config['MAIL_USERNAME'] = 'your-email@gmail.com'  # Use environment variables for security
+app.config['MAIL_PASSWORD'] = 'your-app-password'  # NEVER hardcode passwords
+app.config['MAIL_DEFAULT_SENDER'] = 'your-email@gmail.com'
 
 mail = Mail(app)
 
@@ -50,8 +51,10 @@ def createAccount():
     email = data.get('email')
     password = data.get('password')
 
-    if not fullname or not email or not password:
-        return jsonify({"status": "failed", "message": "Missing required fields"}), 400
+    user = User()
+    if user.email_exists(email):
+        print(f"❌ Email '{email}' already exists.")
+        return jsonify({'status': 'error', 'message': 'Email already exists!'})
 
     verification_code = generate_verification_code()
 
@@ -59,7 +62,7 @@ def createAccount():
     session['fullname'] = fullname
     session['email'] = email
     session['password'] = generate_password_hash(password)
-    session['verification_code'] = verification_code 
+    session['verification_code'] = verification_code  
 
     # Send OTP email
     if send_verification_email(email, verification_code):
@@ -89,19 +92,30 @@ def verify():
     data = request.get_json()
     user_otp = data.get('otp')
 
+    if 'email' not in session:
+        return jsonify({"status": "failed", "message": "Session expired. Please sign up again."}), 400
+
     if user_otp == session.get('verification_code'):
-        return jsonify({"status": "success", "message": "Verification successful!"})
+        fullname = session['fullname']
+        email = session['email']
+        password = session['password']  # Already hashed in `createAccount`
+        
+        user = User()
+        success = user.create_user_account(fullname, email, password)
+
+        if success:
+            session.clear()  # Clear session after successful verification
+            return jsonify({"status": "success", "message": "Verification successful!"})
+        else:
+            return jsonify({"status": "failed", "message": "Database error. Try again later."}), 500
     else:
         return jsonify({"status": "failed", "message": "Invalid verification code"}), 400
-    
+
 @app.route('/verify', methods=['GET'])
 def verify_page():
     if 'email' in session:
         return render_template('verificationCode.html', email=session.get('email'))
-    return redirect(url_for('signup'))  # Redirect if session expired
-
-
-
+    return redirect(url_for('signup'))  
 
 @app.route('/resendOtp', methods=['POST'])
 def resend_otp():
@@ -115,7 +129,6 @@ def resend_otp():
         return jsonify({"status": "success", "message": "New OTP sent!"})
     else:
         return jsonify({"status": "failed", "message": "Failed to send email. Try again later."}), 500
-
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5001)
