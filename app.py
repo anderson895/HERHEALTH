@@ -10,13 +10,13 @@ app = Flask(__name__)
 app.secret_key = 'rksdjghsekuhh'  # Consider using an environment variable for security
 CORS(app)
 
-# Flask-Mail Configuration (Replace with your SMTP details securely)
+# Flask-Mail Configuration (Replace with your SMTP details)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'  
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'your-email@gmail.com'  # Use environment variables for security
-app.config['MAIL_PASSWORD'] = 'your-app-password'  # NEVER hardcode passwords
-app.config['MAIL_DEFAULT_SENDER'] = 'your-email@gmail.com'
+app.config['MAIL_USERNAME'] = 'angeladeniseflores199@gmail.com'  
+app.config['MAIL_PASSWORD'] = 'rpbm yjls katl wcrt'  
+app.config['MAIL_DEFAULT_SENDER'] = 'angeladeniseflores199@gmail.com'
 
 mail = Mail(app)
 
