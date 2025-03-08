@@ -1,8 +1,10 @@
 $(document).ready(function () {
 
     
-    $("#btnCreateAccount").click(function (e) { 
-      
+
+    $("#frmCreateAccount").submit(function (e) {
+        e.preventDefault();
+
         let regName = $.trim($("#regName").val());
         let regEmail = $.trim($("#regEmail").val());
         let regPassword = $.trim($("#regPassword").val());
@@ -26,10 +28,8 @@ $(document).ready(function () {
             alertify.error('Password is Required!');
             return;
         }
-    });
 
-    $("#frmCreateAccount").submit(function (e) {
-        e.preventDefault();
+
         $('#spinner').show();
         $('#btnCreateAccount').prop('disabled', true);
            
