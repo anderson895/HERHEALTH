@@ -1,0 +1,35 @@
+{% include 'components/header.html' %}
+
+<div class="bg-[#343541] p-8 rounded-lg shadow-lg w-full max-w-md text-center text-white">
+    <h1 class="text-2xl font-bold">Verify Your Account</h1>
+
+    <!-- Spinner -->
+    <div class="spinner" id="spinner" style="display:none;">
+        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div class="w-10 h-10 border-4 border-[#10A37F] border-t-transparent rounded-full animate-spin"></div>
+        </div>
+    </div>
+
+    <p class="text-gray-300 mt-2">Enter the verification code we just sent to <br> 
+        <span class="font-medium text-[#10A37F]">{{ session['email'] }}</span>.
+    </p>
+
+    <div class="mt-4 text-left">
+        <label for="code" class="block text-gray-300 font-medium">Code</label>
+        <input type="text" id="code" placeholder="Enter code" 
+               class="mt-2 w-full p-3 border border-gray-600 rounded-lg bg-[#40414F] text-white 
+                      placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#10A37F]">
+    </div>
+
+    <button id="verifyOtpBtn" class="mt-6 w-full bg-[#10A37F] text-white py-3 rounded-lg font-medium hover:bg-[#1A7F64] transition-all">
+        Continue
+    </button>
+
+    <button id="resendOtpBtn" class="mt-2 text-[#10A37F] font-medium hover:underline">
+        Resend email
+    </button>
+</div>
+
+{% include 'components/footer.html' %}
+
+

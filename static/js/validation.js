@@ -1,8 +1,7 @@
-$(document).ready(function () {
+
 
     $("#btnCreateAccount").click(function (e) { 
-        e.preventDefault();
-
+      
         let regName = $.trim($("#regName").val());
         let regEmail = $.trim($("#regEmail").val());
         let regPassword = $.trim($("#regPassword").val());
@@ -21,11 +20,9 @@ $(document).ready(function () {
             alertify.error('Invalid Email Format!');
             return;
         }
+
         if (regPassword === "") {
             alertify.error('Password is Required!');
             return;
         }
-
     });
-
-});
