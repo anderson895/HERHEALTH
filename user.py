@@ -49,7 +49,7 @@ class User(Database):
             WHERE email = %s AND password = %s
         ''', (email, hashed_password))
 
-        return hashed_password
+        return result['count'] > 0 if result else False
 
     def search_user_session(self, email, password):
         """Retrieves user details if login credentials are valid."""
@@ -69,7 +69,7 @@ class User(Database):
         else:
             response_data = {
                 'success': False,
-                'message': hashed_password
+                'message': 'Incorrect Email or Password'
             }
 
         return json.dumps(response_data, default=str)
