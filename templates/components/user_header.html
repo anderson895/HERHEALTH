@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="/static/assets/images/logo.jpeg">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <title>ChatGPT UI</title>
@@ -41,7 +42,9 @@
                 <button id="user-btn" class="w-full py-2 px-4 bg-gray-700 rounded flex items-center justify-between">
                     <span class="flex items-center">
                         <span class="material-icons mr-2">account_circle</span>
-                        <span id="username">{{ session['name'] }}</span>
+                        <span id="username" class="max-w-[150px] truncate whitespace-nowrap overflow-hidden">
+                            {{ session['name'] }}
+                        </span>
                     </span>
                     <span class="material-icons">arrow_drop_down</span>
                 </button>
@@ -52,6 +55,7 @@
                     </ul>
                 </div>
             </div>
+            
         </aside>
 
   
