@@ -2,9 +2,9 @@ import random
 import smtplib
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 from flask_cors import CORS
-from werkzeug.security import generate_password_hash
 from flask_mail import Mail, Message
 from user import User  
+import json
 
 app = Flask(__name__)
 app.secret_key = 'rksdjghsekuhh'  # Consider using an environment variable for security
@@ -61,7 +61,7 @@ def createAccount():
     # Store user data in session
     session['fullname'] = fullname
     session['email'] = email
-    session['password'] = generate_password_hash(password)
+    session['password'] = password
     session['verification_code'] = verification_code  
 
     # Send OTP email
@@ -129,6 +129,60 @@ def resend_otp():
         return jsonify({"status": "success", "message": "New OTP sent!"})
     else:
         return jsonify({"status": "failed", "message": "Failed to send email. Try again later."}), 500
+    
+
+
+@app.route("/LoginAccount", methods=['POST'])
+def LoginAccount():
+    """Handles patient login and session management"""
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+    
+
+    user = User()  # Initialize Patients class
+
+    # Check login
+    if user.login_user_account(email, password):
+        session_data = user.search_user_session(email, password)
+        session_info = json.loads(session_data)
+
+        # Store user session
+        if session_info['success']:
+            session['id'] = session_info['account']['id']
+            session['email'] = session_info['account']['email']
+            session['name'] = session_info['account']['name']
+            session.permanent = True  # Keep session active
+
+            return jsonify({'status': 'success', 'message': 'Login successful!'})  
+        else:
+            return jsonify({'status': 'error', 'message': session_info['message']})
+
+    return jsonify({'status': 'error', 'message': 'Incorrect Email or Password'})  
+
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('landing'))
+
+
+
+@app.route('/user/home')
+def home_user():
+    if 'id' not in session:  
+        return redirect(url_for('logout')) 
+    return render_template('user/home.html', session=session)
+
+@app.route('/user/explore')
+def explore_user():
+    if 'id' not in session:  
+        return redirect(url_for('logout')) 
+    return render_template('user/explore.html', session=session)
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5001)

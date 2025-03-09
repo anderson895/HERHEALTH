@@ -3,13 +3,24 @@
 <div class="bg-[#343541] p-8 rounded-lg shadow-lg w-full max-w-md text-center text-white">
 
     <h2 class="text-2xl font-bold">HERHEALTH</h2>
-    <input type="email" placeholder="Email address*" 
+
+
+      <!-- Spinner -->
+      <div class="spinner" id="spinner" style="display:none;">
+        <div class="absolute inset-0 bg-dark bg-opacity-75 flex items-center justify-center">
+            <div class="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+    </div>
+
+    <form id="frmLoginAccount">
+    <input type="email" placeholder="Email address*" name="Email" id="logEmail"
         class="mt-4 w-full p-3 border border-gray-600 rounded-lg bg-[#40414F] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#10A37F]">
-    <input type="password" placeholder="Password" 
+    <input type="password" placeholder="Password" name="Password" id="logPassword"
         class="mt-4 w-full p-3 border border-gray-600 rounded-lg bg-[#40414F] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#10A37F]">
-    <button class="mt-4 w-full bg-[#10A37F] text-white py-3 rounded-lg font-medium hover:bg-[#1A7F64] transition-all">
+    <button id="btnLoginAccount" class="mt-4 w-full bg-[#10A37F] text-white py-3 rounded-lg font-medium hover:bg-[#1A7F64] transition-all">
         Login
     </button>
+    </form>
 
     <p class="mt-4 text-gray-300">
         Don't have an account? <a href="/signup" class="text-[#10A37F] font-medium hover:underline">Sign Up</a>

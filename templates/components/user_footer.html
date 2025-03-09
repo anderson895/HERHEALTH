@@ -1,0 +1,42 @@
+
+
+</div>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+<script>
+
+    $(document).ready(function() {
+        
+        // Open Sidebar
+        $("#menu-btn").click(function() {
+            $("#sidebar").removeClass("-translate-x-full");
+        });
+
+        // Close Sidebar when clicking close button
+        $("#close-btn").click(function() {
+            $("#sidebar").addClass("-translate-x-full");
+        });
+
+        // Close Sidebar when clicking outside
+        $(document).click(function(event) {
+            if (!$("#sidebar").is(event.target) && $("#sidebar").has(event.target).length === 0 && !$("#menu-btn").is(event.target)) {
+                $("#sidebar").addClass("-translate-x-full");
+            }
+        });
+
+        $('#user-btn').click(function () {
+                $('#user-dropdown').toggleClass('hidden');
+            });
+            
+        $(document).click(function (e) {
+                if (!$(e.target).closest('#user-btn, #user-dropdown').length) {
+                    $('#user-dropdown').addClass('hidden');
+                }
+        });
+
+    });
+</script>
+</body>
+</html>

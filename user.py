@@ -2,6 +2,7 @@ import hashlib
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from database import Database
+import json
 
 class User(Database):
     def __init__(self):
@@ -37,6 +38,41 @@ class User(Database):
         except psycopg2.Error as e:
             print(f"❌ Database error: {e}")
             return False
+    
+
+    def login_user_account(self, email, password):
+        """Checks if the email and password combination exists in the database."""
+        hashed_password = self.hash_password(password)
+
+        result = self.fetch_one('''
+            SELECT COUNT(*) FROM "user"
+            WHERE email = %s AND password = %s
+        ''', (email, hashed_password))
+
+        return hashed_password
+
+    def search_user_session(self, email, password):
+        """Retrieves user details if login credentials are valid."""
+        hashed_password = self.hash_password(password)
+
+        result = self.fetch_one('''
+            SELECT id, name, email, created_at FROM "user"
+            WHERE email = %s AND password = %s
+        ''', (email, hashed_password))
+
+        # Prepare the response data
+        if result:
+            response_data = {
+                'success': True,
+                'account': result
+            }
+        else:
+            response_data = {
+                'success': False,
+                'message': hashed_password
+            }
+
+        return json.dumps(response_data, default=str)
 
     def close(self):
         """Closes the database connection properly when done."""

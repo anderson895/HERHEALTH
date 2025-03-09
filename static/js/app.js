@@ -1,5 +1,61 @@
 $(document).ready(function () {
 
+    $("#frmLoginAccount").submit(function (e) {
+        e.preventDefault();
+
+        let email = $.trim($("#logEmail").val());
+        let password = $.trim($("#logPassword").val());
+
+        let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Email RegEx
+
+        if (email === "") {
+            alertify.error('Email is Required!');
+            return;
+        }
+        if (!emailPattern.test(email)) {  // Check email format
+            alertify.error('Invalid Email Format!');
+            return;
+        }
+
+        if (password === "") {
+            alertify.error('Password is Required!');
+            return;
+        }
+
+
+        $('#spinner').show();
+        $('#btnLoginAccount').prop('disabled', true);
+
+      
+
+        var formData = {
+            email: email,
+            password: password
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/LoginAccount",
+            contentType: "application/json",
+            data: JSON.stringify(formData),
+            success: function (response) {
+                console.log(response);
+                $('#spinner').hide();
+                $('#btnLoginAccount').prop('disabled', false);
+
+                if (response.status === "success") {
+                    alertify.success(response.message);
+                    setTimeout(function () {
+                        window.location.href = "/user/home";
+                    }, 1000);
+                } else {
+                    alertify.error(response.message);
+                }
+            },
+        });
+    });
+
+
     
 
     $("#frmCreateAccount").submit(function (e) {

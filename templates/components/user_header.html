@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <title>ChatGPT UI</title>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Mobile Menu Button -->
+    <button id="menu-btn" class="md:hidden fixed top-4 left-4 bg-gray-700 p-2 rounded focus:outline-none z-50">
+        ☰
+    </button>
+
+    <div class="relative flex h-screen">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="w-64 bg-gray-800 p-4 fixed inset-y-0 left-0 transform -translate-x-full transition-transform duration-300 md:translate-x-0 md:relative z-50 flex flex-col justify-between">
+            <div>
+                <h1 class="text-xl font-bold">ChatGPT</h1>
+                <nav class="mt-4">
+                    <ul>
+                        <a href="/user/explore">
+                            <li class="py-2 hover:bg-gray-700 p-2 rounded mb-12 flex items-center">
+                                <span class="material-icons mr-2">search</span> Explore HERHEALTH
+                            </li>
+                        </a>
+                        <li class="py-2 hover:bg-gray-700 p-2 rounded flex items-center">
+                            <span class="material-icons mr-2">chat</span> Previous Chats
+                        </li>
+                        <li class="py-2 hover:bg-gray-700 p-2 rounded flex items-center">
+                            <span class="material-icons mr-2">history</span> Chat History
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            
+            <!-- User Section -->
+            <div class="relative">
+                <button id="user-btn" class="w-full py-2 px-4 bg-gray-700 rounded flex items-center justify-between">
+                    <span class="flex items-center">
+                        <span class="material-icons mr-2">account_circle</span>
+                        <span id="username">{{ session['name'] }}</span>
+                    </span>
+                    <span class="material-icons">arrow_drop_down</span>
+                </button>
+                <div id="user-dropdown" class="hidden absolute bottom-12 left-0 w-full bg-gray-700 rounded shadow-lg">
+                    <ul>
+                        <li class="py-2 px-4 hover:bg-gray-600 cursor-pointer">Settings</li>
+                        <li class="py-2 px-4 hover:bg-gray-600 cursor-pointer"><a href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+
+  
