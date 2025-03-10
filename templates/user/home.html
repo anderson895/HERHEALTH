@@ -1,27 +1,113 @@
 {% include 'components/user_header.html' %}
+
 <!-- Main Content -->
-<main class="w-full flex flex-col items-center justify-center p-4 min-h-screen">
+<main class="w-full flex flex-col items-center justify-center p-4 min-h-screen text-white">
     <h2 class="text-2xl font-bold mb-4">What can I help with?</h2>
-    <div class="w-full max-w-lg">
-        <div class="w-full max-w-lg">
-            <div class="relative bg-gray-900 rounded-2xl p-3 flex items-center gap-2 shadow-md">
-               
-                <div class="flex items-center w-full bg-gray-800 rounded-lg p-2">
-                    <input type="text" placeholder="Ask anything" 
-                        class="flex-1 bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-0 px-2" />
-                    <button class="p-2 rounded-md bg-white text-gray-900 hover:bg-gray-300 transition duration-300">
+    <div class="w-full max-w-full lg:max-w-lg"> <!-- Adjusted max-width -->
+        <div class="w-full max-w-full lg:max-w-lg">
+
+            <!-- Chat box -->
+            <div hidden id="chat-box" class="h-96 overflow-y-auto p-4 rounded-lg mb-6 space-y-4">
+                <!-- Messages will be displayed here -->
+            </div>
+
+            <div class="relative bg-[#40414F] rounded-2xl p-3 flex items-center gap-2 shadow-md">
+                <div class="flex items-center w-full bg-[#565869] rounded-lg p-2">
+                    <input id="user-input" type="text" placeholder="Ask anything..." 
+                        class="flex-1 bg-transparent text-white placeholder-gray-300 focus:outline-none focus:ring-0 px-2" />
+                    <button id="send-btn" class="p-2 rounded-md bg-[#10A37F] text-white hover:bg-[#1A8D6E] transition duration-300">
                         <span class="material-icons">send</span>
                     </button>
                 </div>
             </div>
-        <div class="flex flex-wrap gap-2 mt-4">
-            <button class="bg-gray-500 hover:bg-gray-600 p-2 rounded-lg transition duration-300">Suggested search 1</button>
-            <button class="bg-gray-500 hover:bg-gray-600 p-2 rounded-lg transition duration-300">Suggested search 2</button>
-            <button class="bg-gray-500 hover:bg-gray-600 p-2 rounded-lg transition duration-300">Suggested search 3</button>
-            <button class="bg-gray-500 hover:bg-gray-600 p-2 rounded-lg transition duration-300">Suggested search 4</button>
-            
-        
+
+            <!-- Suggestions Section -->
+            <div class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-1 lg:grid-cols-2"> <!-- Make it responsive -->
+                <button class="suggestion-btn bg-[#565869] hover:bg-[#66687A] text-white py-2 px-4 rounded-md shadow-md" data-suggestion="What services do you offer?">What services do you offer?</button>
+                <button class="suggestion-btn bg-[#565869] hover:bg-[#66687A] text-white py-2 px-4 rounded-md shadow-md" data-suggestion="Can you help with my programming project?">Can you help with my project?</button>
+                <button class="suggestion-btn bg-[#565869] hover:bg-[#66687A] text-white py-2 px-4 rounded-md shadow-md" data-suggestion="What programming languages do you specialize in?">What programming languages do you specialize in?</button>
+                <button class="suggestion-btn bg-[#565869] hover:bg-[#66687A] text-white py-2 px-4 rounded-md shadow-md" data-suggestion="May I see your sample project for ecommerce?">May I see your sample project for ecommerce?</button>
+            </div>
         </div>
     </div>
 </main>
+
+<script>
+   function appendMessage(message, type) {
+    const messageDiv = $('<div>').addClass('chat-message').addClass(type).addClass('mb-4 p-3 rounded-lg');
+    if (type === 'user') {
+        messageDiv.addClass('bg-[#444654] text-white text-right');
+        messageDiv.text(message); // Display the user's message directly
+    } else {
+        messageDiv.addClass('text-white text-left');
+
+        // Typing effect for the bot's message
+        let index = 0;
+        messageDiv.text('');
+        $('#chat-box').append(messageDiv);
+        $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+
+        function typeWriter() {
+            if (index < message.length) {
+                messageDiv.append(message.charAt(index));
+                index++;
+                setTimeout(typeWriter, 50); // Adjust typing speed here
+            }
+        }
+
+        typeWriter(); // Start the typing effect
+    }
+
+    $('#chat-box').append(messageDiv);
+    $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+}
+
+$('#send-btn').on('click', function() {
+    const userMessage = $('#user-input').val().trim();
+    if (userMessage) {
+        $('#chat-box').show(); // Show the chat box when the first message is sent
+        appendMessage(userMessage, 'user');  // Display the user's message directly
+        $('#user-input').val('');
+
+        $.ajax({
+            url: '/chat',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ message: userMessage }),
+            success: function(data) {
+                const botResponse = data.response;
+
+                // Check if the bot response contains an image URL
+                if (data.image_url) {
+                    // Create an <img> element and append it to the chat box
+                    const imageElement = $('<img>').attr('src', data.image_url).addClass('w-full mt-2');
+                    $('#chat-box').append(imageElement);
+                } else {
+                    // Otherwise, append the response message with typing effect
+                    appendMessage(botResponse, 'bot');
+                }
+            },
+            error: function(error) {
+                console.error('Error:', error);
+                appendMessage("Sorry, something went wrong. Please try again.", 'bot');
+            }
+        });
+    }
+});
+
+// Handle Enter key press
+$('#user-input').on('keypress', function(event) {
+    if (event.which === 13) {
+        $('#send-btn').click();
+    }
+});
+
+// Handle suggestions button click
+$('.suggestion-btn').on('click', function() {
+    const suggestion = $(this).data('suggestion');
+    $('#user-input').val(suggestion);
+    $('#send-btn').click();
+});
+</script>
+
 {% include 'components/user_footer.html' %}

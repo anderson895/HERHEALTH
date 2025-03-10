@@ -1,10 +1,13 @@
 import random
 import smtplib
+import json
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 from flask_cors import CORS
 from flask_mail import Mail, Message
 from user import User  
-import json
+from render_chat import Chat  
+
+
 
 app = Flask(__name__)
 app.secret_key = 'rksdjghsekuhh'  # Consider using an environment variable for security
@@ -20,6 +23,20 @@ app.config['MAIL_DEFAULT_SENDER'] = ('HERHEALTH', 'angeladeniseflores199@gmail.c
 
 
 mail = Mail(app)
+
+
+
+@app.route('/chat', methods=['POST'])
+def chat():
+    data = request.get_json()
+    user_input = data.get("message", "").strip()
+    
+    chat_instance = Chat()
+    response = chat_instance.chat_response(user_input)
+    chat_instance.close()
+    
+    return jsonify(response)
+
 
 @app.route('/')
 def landing():
@@ -141,7 +158,7 @@ def LoginAccount():
     password = data.get('password')
     
 
-    user = User()  # Initialize Patients class
+    user = User()  # Initialize class
 
     # Check login
     if user.login_user_account(email, password):

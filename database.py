@@ -64,7 +64,7 @@ class Database:
             print("❌ Connection test failed.")
 
 
-# Example usage
+
 if __name__ == "__main__":
     db = Database()
     db.test_connection()
