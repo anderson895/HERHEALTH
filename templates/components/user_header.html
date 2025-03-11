@@ -15,6 +15,8 @@
         ☰
     </button>
 
+    <input hidden type="text" class="text-black" id="target_date" name="today_date" value="{{today_date}}">
+
     <div class="relative flex h-screen">
         <!-- Sidebar -->
         <aside id="sidebar" class="w-64 bg-gray-800 p-4 fixed inset-y-0 left-0 transform -translate-x-full transition-transform duration-300 md:translate-x-0 md:relative z-50 flex flex-col justify-between">
@@ -27,12 +29,12 @@
                                 <span class="material-icons mr-2">search</span> Explore 
                             </li>
                         </a>
-                        <li class="py-2 hover:bg-gray-700 p-2 rounded flex items-center">
-                            <span class="material-icons mr-2">chat</span> Today
-                        </li>
+                       
                         <li class="py-2 hover:bg-gray-700 p-2 rounded flex items-center">
                             <span class="material-icons mr-2">history</span> Chat History
                         </li>
+                        <ul id="chat-history" class="mt-2 pl-4 text-sm text-gray-400"></ul>
+                        
                     </ul>
                 </nav>
             </div>
@@ -58,6 +60,9 @@
             
         </aside>
 
+    
+        
+        
 {% include 'components/pageSpinner.html' %}      
 
   

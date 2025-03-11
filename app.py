@@ -25,6 +25,45 @@ app.config['MAIL_DEFAULT_SENDER'] = ('HERHEALTH', 'angeladeniseflores199@gmail.c
 mail = Mail(app)
 
 
+@app.route('/get_chats', methods=['GET'])
+def get_chats_record():
+    if 'id' not in session:
+        return jsonify({"error": "User not logged in"}), 401 
+
+    chat_sender_id = session['id']
+    target_date = request.args.get('target_date')  # Get target date from request
+
+    chat = Chat()
+
+    # Fetch chat records, filtering by target_date if provided
+    chat_records = chat.get_chats(chat_sender_id, target_date)
+
+    return jsonify({"chats": chat_records})
+
+
+
+
+
+@app.route('/api/chat_dates', methods=['GET'])
+def get_chat_dates():
+    chat_instance = Chat()
+    sorted_dates = chat_instance.previous_chat()
+    chat_instance.close()
+
+    # Convert datetime.date to string format YYYY-MM-DD
+    formatted_dates = [date.strftime('%Y-%m-%d') for date in sorted_dates]
+    
+    return jsonify({"chat_dates": formatted_dates})
+
+
+
+
+
+
+
+
+
+
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.get_json()
@@ -54,20 +93,6 @@ def chat():
 
 
 
-@app.route('/get_chats', methods=['GET'])
-def get_chats_record():
-    if 'id' not in session:
-        return jsonify({"error": "User not logged in"}), 401 
-
-    chat_sender_id = session['id']
-    target_date = request.args.get('target_date')  # Get target date from request
-
-    chat = Chat()
-
-    # Fetch chat records, filtering by target_date if provided
-    chat_records = chat.get_chats(chat_sender_id, target_date)
-
-    return jsonify({"chats": chat_records})
 
 
 

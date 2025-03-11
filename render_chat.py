@@ -103,48 +103,76 @@ class Chat(Database):
 
         chat_instance = Chat()
 
-        # Convert TIMESTAMPTZ to DATE for comparison
-        query = '''SELECT chat_content, chat_bot_response 
-                FROM chat 
-                WHERE chat_sender_id = %s 
-                AND DATE(chat_sent_date) = %s 
-                ORDER BY chat_id ASC'''
+        # Ensure `target_date` is in correct format
+        if not target_date:
+            return {"error": "Missing target_date"}
+
+        query = '''
+            SELECT chat_content, chat_bot_response 
+            FROM chat 
+            WHERE chat_sender_id = %s 
+            AND DATE(chat_sent_date) = %s 
+            ORDER BY chat_id ASC
+        '''
+
+        try:
+            chat_records = chat_instance.fetch_all(query, (chat_sender_id, target_date))
+            chat_instance.close()
+
+            if not chat_records:
+                return []
+
+            formatted_chats = []
+            for record in chat_records:
+                if isinstance(record, dict):  # Handle RealDictRow format
+                    chat_content = record.get("chat_content", "")
+                    chat_bot_response = record.get("chat_bot_response", "{}")
+                else:
+                    chat_content, chat_bot_response = record  # Tuple unpacking
+
+                # ✅ Handle None values for chat_bot_response
+                if chat_bot_response is None:
+                    chat_bot_response = "{}"
+
+                # ✅ Convert string representation of JSON into a proper dictionary
+                if isinstance(chat_bot_response, str):
+                    try:
+                        bot_response = json.loads(chat_bot_response.replace("'", '"'))  # Fix single quotes if needed
+                    except json.JSONDecodeError:
+                        bot_response = {"type": "text", "content": chat_bot_response}
+                else:
+                    bot_response = chat_bot_response  # Already a dict
+
+                formatted_chats.append({
+                    "user_message": chat_content,
+                    "bot_type": bot_response.get("type", "text"),
+                    "bot_message": bot_response.get("content", ""),
+                })
+
+            return formatted_chats
+
+        except Exception as e:
+            print(f"❌ Error fetching chats: {e}")
+            return {"error": "Database error occurred"}
+
+
+
+
+
+    def previous_chat(self):
+        """Fetch all chat_sent_date values and return them sorted."""
+        query = '''SELECT DISTINCT DATE(chat_sent_date) AS chat_date FROM chat ORDER BY chat_date DESC'''
         
-        chat_records = chat_instance.fetch_all(query, (chat_sender_id, target_date))
+        try:
+            result = self.fetch_all(query)
+            print(f"🔍 Raw Query Result: {result}")  # Debugging step
 
-        chat_instance.close()
+            # Extract dates from dictionary if fetch_all returns a list of dicts
+            return [row['chat_date'] for row in result] if result else []
 
-        if not chat_records:
+        except Exception as e:
+            print(f"❌ Error fetching chat dates: {e}")
             return []
-
-        formatted_chats = []
-        for record in chat_records:
-            if isinstance(record, dict):
-                chat_content = record.get("chat_content", "")
-                chat_bot_response = record.get("chat_bot_response", "{}")
-            else:
-                chat_content, chat_bot_response = record  # Tuple unpacking
-
-            # ✅ Convert string representation of dict into actual JSON
-            if isinstance(chat_bot_response, str):
-                try:
-                    bot_response = json.loads(chat_bot_response.replace("'", '"'))  # Fix single quotes to double quotes
-                except json.JSONDecodeError:
-                    bot_response = {"type": "text", "content": chat_bot_response}
-            else:
-                bot_response = chat_bot_response  # Already a dict
-
-            formatted_chats.append({
-                "user_message": chat_content,
-                "bot_type": bot_response.get("type", "text"),
-                "bot_message": bot_response.get("content", ""),
-            })
-
-        return formatted_chats
-
-
-
-
 
 
 
