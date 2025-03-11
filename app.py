@@ -10,10 +10,10 @@ from render_chat import Chat
 
 
 app = Flask(__name__)
-app.secret_key = 'rksdjghsekuhh'  # Consider using an environment variable for security
+app.secret_key = 'rksdjghsekuhh'  
 CORS(app)
 
-# Flask-Mail Configuration (Replace with your SMTP details)
+# Flask-Mail Configuration
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'  
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
