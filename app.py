@@ -6,7 +6,7 @@ from flask_cors import CORS
 from flask_mail import Mail, Message
 from user import User  
 from render_chat import Chat  
-
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -57,15 +57,18 @@ def chat():
 @app.route('/get_chats', methods=['GET'])
 def get_chats_record():
     if 'id' not in session:
-        return jsonify({"error": "User not logged in"}), 401  # Unauthorized response
+        return jsonify({"error": "User not logged in"}), 401 
 
-    chat_sender_id = session['id']  # Get user ID from session
+    chat_sender_id = session['id']
+    target_date = request.args.get('target_date')  # Get target date from request
+
     chat = Chat()
 
-    # Fetch chat records
-    chat_records = chat.get_chats(chat_sender_id)
-    
-    return jsonify({"chats": chat_records})  # ✅ Ensure JSON response format
+    # Fetch chat records, filtering by target_date if provided
+    chat_records = chat.get_chats(chat_sender_id, target_date)
+
+    return jsonify({"chats": chat_records})
+
 
 
 
@@ -224,7 +227,13 @@ def logout():
 def home_user():
     if 'id' not in session:  
         return redirect(url_for('logout')) 
-    return render_template('user/home.html', session=session)
+    
+    # Kunin ang kasalukuyang petsa
+    today_date = datetime.today().strftime('%Y-%m-%d')  # Format: YYYY-MM-DD
+
+    return render_template('user/home.html', session=session, today_date=today_date)
+
+
 
 @app.route('/user/explore')
 def explore_user():

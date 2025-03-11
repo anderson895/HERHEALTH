@@ -97,14 +97,20 @@ class Chat(Database):
             return False
 
 
-    def get_chats(self, chat_sender_id):
+    def get_chats(self, chat_sender_id, target_date):
         if not chat_sender_id:
             return {"error": "Missing chat_sender_id"}
 
         chat_instance = Chat()
 
-        query = '''SELECT chat_content, chat_bot_response FROM chat WHERE chat_sender_id = %s ORDER BY chat_id ASC'''
-        chat_records = chat_instance.fetch_all(query, (chat_sender_id,))
+        # Convert TIMESTAMPTZ to DATE for comparison
+        query = '''SELECT chat_content, chat_bot_response 
+                FROM chat 
+                WHERE chat_sender_id = %s 
+                AND DATE(chat_sent_date) = %s 
+                ORDER BY chat_id ASC'''
+        
+        chat_records = chat_instance.fetch_all(query, (chat_sender_id, target_date))
 
         chat_instance.close()
 
@@ -135,6 +141,7 @@ class Chat(Database):
             })
 
         return formatted_chats
+
 
 
 
