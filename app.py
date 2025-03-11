@@ -30,12 +30,40 @@ mail = Mail(app)
 def chat():
     data = request.get_json()
     user_input = data.get("message", "").strip()
-    
+    chat_sender_id = session['id']  
+
+    if not chat_sender_id or not user_input:
+        return jsonify({"error": "Missing chat_sender_id or message"}), 400
+
     chat_instance = Chat()
-    response = chat_instance.chat_response(user_input)
-    chat_instance.close()
     
-    return jsonify(response)
+    # Generate chatbot response
+    response_data = chat_instance.chat_response(user_input)
+    chat_bot_response = response_data.get("response", "")
+
+    # Save chat record
+    chat_instance.record_chat(chat_sender_id, user_input, chat_bot_response)
+    
+    chat_instance.close()
+
+    return jsonify(response_data)
+
+
+@app.route('/get_chats', methods=['GET'])
+def get_chats_record():
+    if 'id' not in session:
+        return jsonify({"error": "User not logged in"}), 401  # Unauthorized response
+
+    chat_sender_id = session['id']  # Get user ID from session
+    chat = Chat()
+
+    # Fetch chat records
+    chat_records = chat.get_chats(chat_sender_id)
+    
+    return jsonify({"chats": chat_records})  # ✅ Ensure JSON response format
+
+
+
 
 
 @app.route('/')
