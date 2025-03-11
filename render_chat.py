@@ -41,25 +41,45 @@ class Chat(Database):
         if "ecommerce project" in user_input.lower():
             return {
                 "response": "Here is an example of an e-commerce project.",
-                "image_url": "https://github.com/user-attachments/assets/eb048ca0-6acc-42da-8596-8ece266d3b64"
+                "image_url": "https://github.com/user-attachments/assets/eb048ca0-6acc-42da-8596-8ece266d3b64",
+                "type": "img_url"
             }
         elif "programming languages" in user_input.lower():
             return {
                 "response": "Here is a visualization of programming language usage.",
-                "image_url": "https://github-readme-stats-salesp07.vercel.app/api/top-langs/?username=anderson895&hide=HTML&langs_count=8&layout=compact&theme=react&border_radius=10&size_weight=0.5&count_weight=0.5&exclude_repo=github-readme-stats"
+                "image_url": "https://github-readme-stats-salesp07.vercel.app/api/top-langs/?username=anderson895&hide=HTML&langs_count=8&layout=compact&theme=react&border_radius=10&size_weight=0.5&count_weight=0.5&exclude_repo=github-readme-stats",
+                "type": "img_url"
             }
         else:
+            # Use trained model to generate response
             # Use trained model to generate response
             predicted_response = model.predict([user_input])[0]
             return {"response": predicted_response}
 
+
+
+
     def record_chat(self, chat_sender_id, user_input, chat_bot_response):
         """I-save ang chat sa database."""
         
-        # I-format ang chat_bot_response nang tama bilang JSON string
+        # Determine response type and content
+        if isinstance(chat_bot_response, dict):
+            chat_response_type = chat_bot_response.get("type", "text")  # Default to "text"
+            chat_response_content = (
+                chat_bot_response.get("image_url") or  # Use image URL if available
+                chat_bot_response.get("response", "")  # Otherwise, use response text
+            )
+        elif isinstance(chat_bot_response, str):
+            chat_response_type = "text"
+            chat_response_content = chat_bot_response
+        else:
+            chat_response_type = "unknown"
+            chat_response_content = str(chat_bot_response)
+
+        # Format response as JSON string
         chat_bot_response_formatted = json.dumps({
-            "type": "text" if isinstance(chat_bot_response, str) else "image_url",
-            "content": chat_bot_response
+            "type": chat_response_type,
+            "content": chat_response_content
         })
 
         status = 1  # Default status
@@ -70,10 +90,10 @@ class Chat(Database):
                 VALUES (%s, %s, %s, %s)''', 
                 (chat_sender_id, user_input, chat_bot_response_formatted, status)
             )
-            print("✅ Chat record saved successfully")
+            print(f"✅ Chat record saved successfully for sender_id {chat_sender_id}")
             return True
         except Exception as e:
-            print(f"❌ Error saving chat record: {e}")
+            print(f"❌ Error saving chat record (sender_id: {chat_sender_id}, input: {user_input}): {e}")
             return False
 
 

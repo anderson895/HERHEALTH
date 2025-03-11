@@ -25,28 +25,33 @@ app.config['MAIL_DEFAULT_SENDER'] = ('HERHEALTH', 'angeladeniseflores199@gmail.c
 mail = Mail(app)
 
 
-
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.get_json()
     user_input = data.get("message", "").strip()
-    chat_sender_id = session['id']  
+    chat_sender_id = session.get('id')  # Avoid KeyError
 
     if not chat_sender_id or not user_input:
         return jsonify({"error": "Missing chat_sender_id or message"}), 400
 
     chat_instance = Chat()
     
-    # Generate chatbot response
-    response_data = chat_instance.chat_response(user_input)
-    chat_bot_response = response_data.get("response", "")
+    try:
+        # Generate chatbot response
+        response_data = chat_instance.chat_response(user_input)
 
-    # Save chat record
-    chat_instance.record_chat(chat_sender_id, user_input, chat_bot_response)
+        # Save the full chatbot response (not just the response text)
+        chat_instance.record_chat(chat_sender_id, user_input, response_data)
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500  # Handle unexpected errors
     
-    chat_instance.close()
+    finally:
+        chat_instance.close()  # Ensure resources are cleaned up
 
     return jsonify(response_data)
+
+
 
 
 @app.route('/get_chats', methods=['GET'])

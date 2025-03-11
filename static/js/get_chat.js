@@ -30,8 +30,8 @@ function fetchChatHistory() {
                 let botMessage = "";
                 if (chat.bot_type === "text") {
                     botMessage = `<div class="mb-4 p-3 rounded-lg text-white text-left">${chat.bot_message}</div>`;
-                } else if (chat.bot_type === "image_url") {
-                    botMessage = `<div class="mb-4 p-3 rounded-lg text-white text-left"><img src="${chat.bot_message}" class="max-w-xs rounded-lg shadow-md" /></div>`;
+                } else if (chat.bot_type === "img_url") {
+                    botMessage = `<img src="${chat.bot_message}" class="w-full mt-2" />`;
                 }
 
                 $("#chat-box").append(userMessage + botMessage);
