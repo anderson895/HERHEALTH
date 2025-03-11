@@ -159,12 +159,15 @@ class Chat(Database):
 
 
 
-    def previous_chat(self):
+    def previous_chat(self, chat_sender_id):
         """Fetch all chat_sent_date values and return them sorted."""
-        query = '''SELECT DISTINCT DATE(chat_sent_date) AS chat_date FROM chat ORDER BY chat_date DESC'''
+        query = '''SELECT DISTINCT DATE(chat_sent_date) AS chat_date 
+                FROM chat 
+                WHERE chat_sender_id = %s 
+                ORDER BY chat_date DESC'''
         
         try:
-            result = self.fetch_all(query)
+            result = self.fetch_all(query, (chat_sender_id,))
             print(f"🔍 Raw Query Result: {result}")  # Debugging step
 
             # Extract dates from dictionary if fetch_all returns a list of dicts
@@ -173,6 +176,7 @@ class Chat(Database):
         except Exception as e:
             print(f"❌ Error fetching chat dates: {e}")
             return []
+
 
 
 

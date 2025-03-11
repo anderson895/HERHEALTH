@@ -47,7 +47,8 @@ def get_chats_record():
 @app.route('/api/chat_dates', methods=['GET'])
 def get_chat_dates():
     chat_instance = Chat()
-    sorted_dates = chat_instance.previous_chat()
+    chat_sender_id = session['id']
+    sorted_dates = chat_instance.previous_chat(chat_sender_id)
     chat_instance.close()
 
     # Convert datetime.date to string format YYYY-MM-DD
