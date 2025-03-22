@@ -38,23 +38,23 @@ class Chat(Database):
             return {"error": "No message provided"}  # Return an error message
         
         # Handle specific user queries
-        if "ecommerce project" in user_input.lower():
-            return {
-                "response": "Here is an example of an e-commerce project.",
-                "image_url": "https://github.com/user-attachments/assets/eb048ca0-6acc-42da-8596-8ece266d3b64",
-                "type": "img_url"
-            }
-        elif "programming languages" in user_input.lower():
-            return {
-                "response": "Here is a visualization of programming language usage.",
-                "image_url": "https://github-readme-stats-salesp07.vercel.app/api/top-langs/?username=anderson895&hide=HTML&langs_count=8&layout=compact&theme=react&border_radius=10&size_weight=0.5&count_weight=0.5&exclude_repo=github-readme-stats",
-                "type": "img_url"
-            }
-        else:
+        # if "ecommerce project" in user_input.lower():
+        #     return {
+        #         "response": "Here is an example of an e-commerce project.",
+        #         "image_url": "https://github.com/user-attachments/assets/eb048ca0-6acc-42da-8596-8ece266d3b64",
+        #         "type": "img_url"
+        #     }
+        # elif "programming languages" in user_input.lower():
+        #     return {
+        #         "response": "Here is a visualization of programming language usage.",
+        #         "image_url": "https://github-readme-stats-salesp07.vercel.app/api/top-langs/?username=anderson895&hide=HTML&langs_count=8&layout=compact&theme=react&border_radius=10&size_weight=0.5&count_weight=0.5&exclude_repo=github-readme-stats",
+        #         "type": "img_url"
+        #     }
+        # else:
             # Use trained model to generate response
             # Use trained model to generate response
-            predicted_response = model.predict([user_input])[0]
-            return {"response": predicted_response}
+        predicted_response = model.predict([user_input])[0]
+        return {"response": predicted_response}
 
 
 
