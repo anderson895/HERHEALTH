@@ -1,3 +1,15 @@
+$(document).on("click", ".chat-date", function () {
+    let selectedDate = $(this).data("date");
+    let today = new Date().toISOString().split('T')[0];
+
+    // Check if the clicked date is today and the current route is /user/explore
+    if (window.location.pathname === "/user/explore") {
+        window.location.href = "/user/home";
+    }
+});
+
+
+
 function loadChatHistory() {
     // Show the spinner
     $("#spinner").show();
@@ -20,12 +32,11 @@ function loadChatHistory() {
                 });
             }
 
-            // Hide the spinner once the data is loaded
             $("#spinner").hide();
         },
         error: function () {
             $("#chat-history").append("<li class='py-1 text-red-500'>Error fetching chat history.</li>");
-            $("#spinner").hide(); // Hide the spinner on error
+            $("#spinner").hide();
         }
     });
 }

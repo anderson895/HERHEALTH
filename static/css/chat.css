@@ -1,0 +1,8 @@
+#chat-box {
+    overflow-y: auto; /* Para ma-scroll pa rin */
+    scrollbar-width: none; /* Tinatago ang scrollbar sa Firefox */
+}
+
+#chat-box::-webkit-scrollbar {
+    display: none; /* Tinatago ang scrollbar sa Chrome at Edge */
+}
