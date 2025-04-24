@@ -74,8 +74,50 @@ function fetchChats() {
                     
                     let botMessage = "";
                     if (chat.bot_type === "text") {
-                        botMessage = `<div class="mb-4 p-3 rounded-lg text-white text-left">${chat.bot_message}</div>`;
-                    } else if (chat.bot_type === "img_url") {
+                        let botMsg = chat.bot_message.trim();
+
+                        // Split into lines
+                        let lines = botMsg.split("\n");
+
+                        let htmlOutput = "";
+                        let inList = false;
+
+                        for (let line of lines) {
+                            let trimmed = line.trim();
+
+                            // Match lines starting with a bullet symbol like -, *, etc.
+                            let bulletMatch = trimmed.match(/^([-*•])\s*(.+)/);
+
+                            if (bulletMatch) {
+                                if (!inList) {
+                                    htmlOutput += "<div class='pl-4 space-y-1'>";
+                                    inList = true;
+                                }
+                                // Manually show the bullet symbol
+                                htmlOutput += `<div><span class="mr-2">${bulletMatch[1]}</span>${bulletMatch[2]}</div>`;
+                            } else {
+                                // Close the previous list if open
+                                if (inList) {
+                                    htmlOutput += "</div>";
+                                    inList = false;
+                                }
+
+                                if (trimmed !== "") {
+                                    htmlOutput += `<p class="mb-2">${trimmed}</p>`;
+                                } else {
+                                    htmlOutput += `<br>`;
+                                }
+                            }
+                        }
+
+                        // Close list if still open
+                        if (inList) {
+                            htmlOutput += "</div>";
+                        }
+
+                        botMessage = `<div class="mb-4 p-3 rounded-lg text-white text-left">${htmlOutput}</div>`;
+
+                    }else if (chat.bot_type === "img_url") {
                         botMessage = `<img src="${chat.bot_message}" class="w-full mt-2" alt="Bot Image" />`;
                     }
 
@@ -136,8 +178,50 @@ $(document).ready(function () {
                     
                     let botMessage = "";
                     if (chat.bot_type === "text") {
-                        botMessage = `<div class="mb-4 p-3 rounded-lg text-white text-left">${chat.bot_message}</div>`;
-                    } else if (chat.bot_type === "img_url") {
+                        let botMsg = chat.bot_message.trim();
+
+                        // Split into lines
+                        let lines = botMsg.split("\n");
+
+                        let htmlOutput = "";
+                        let inList = false;
+
+                        for (let line of lines) {
+                            let trimmed = line.trim();
+
+                            // Match lines starting with a bullet symbol like -, *, etc.
+                            let bulletMatch = trimmed.match(/^([-*•])\s*(.+)/);
+
+                            if (bulletMatch) {
+                                if (!inList) {
+                                    htmlOutput += "<div class='pl-4 space-y-1'>";
+                                    inList = true;
+                                }
+                                // Manually show the bullet symbol
+                                htmlOutput += `<div><span class="mr-2">${bulletMatch[1]}</span>${bulletMatch[2]}</div>`;
+                            } else {
+                                // Close the previous bullet section if open
+                                if (inList) {
+                                    htmlOutput += "</div>";
+                                    inList = false;
+                                }
+
+                                if (trimmed !== "") {
+                                    htmlOutput += `<p class="mb-2">${trimmed}</p>`;
+                                } else {
+                                    htmlOutput += `<br>`;
+                                }
+                            }
+                        }
+
+                        // Close bullet section if still open
+                        if (inList) {
+                            htmlOutput += "</div>";
+                        }
+
+                        botMessage = `<div class="mb-4 p-3 rounded-lg text-white text-left">${htmlOutput}</div>`;
+
+                    }else if (chat.bot_type === "img_url") {
                         botMessage = `<img src="${chat.bot_message}" class="w-full mt-2" alt="Bot Image" />`;
                     }
     

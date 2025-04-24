@@ -25,34 +25,43 @@ $('.suggestion-btn').on('click', function() {
 
 
 function appendMessage(message, type) {
-    const messageDiv = $('<div>').addClass('chat-message').addClass(type).addClass('mb-4 p-3 rounded-lg');
     if (type === 'user') {
-        messageDiv.addClass('bg-[#444654] text-white text-right');
-        messageDiv.text(message); // Display the user's message directly
-    } else {
-        messageDiv.addClass('text-white text-left');
-
-        // Typing effect for the bot's message
-        let index = 0;
-        messageDiv.text('');
-        $('#chat-box').append(messageDiv);
+        const userDiv = $('<div>')
+            .addClass('chat-message user mb-4 p-3 rounded-lg bg-[#444654] text-white text-right')
+            .text(message);
+        $('#chat-box').append(userDiv);
         $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+    } else {
+        const container = $('<div>')
+            .addClass('chat-message bot mb-4 p-3 rounded-lg text-white text-left');
+
+        const messageDiv = $('<div>');
+        container.append(messageDiv);
+        $('#chat-box').append(container);
+        $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+
+        let index = 0;
 
         function typeWriter() {
             if (index < message.length) {
-                messageDiv.append(message.charAt(index));
+                let char = message.charAt(index);
+
+                // Handle new lines and bullets smoothly
+                if (char === '\n') {
+                    messageDiv.append('<br>');
+                } else {
+                    messageDiv.append(document.createTextNode(char));
+                }
+
                 index++;
-                setTimeout(typeWriter, 50); // Adjust typing speed here
+                $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+                setTimeout(typeWriter, 30); // Adjust typing speed here
             }
         }
 
-        typeWriter(); // Start the typing effect
+        typeWriter(); // Start the smooth typing effect
     }
-
-    $('#chat-box').append(messageDiv);
-    $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
 }
-
 
 
 
@@ -60,8 +69,8 @@ function appendMessage(message, type) {
 $('#send-btn').on('click', function() {
     const userMessage = $('#user-input').val().trim();
     if (userMessage) {
-        $('#chat-box').show(); // Show the chat box when the first message is sent
-        appendMessage(userMessage, 'user');  // Display the user's message directly
+        $('#chat-box').show(); 
+        appendMessage(userMessage, 'user');  
         $('#user-input').val('');
 
         $.ajax({
