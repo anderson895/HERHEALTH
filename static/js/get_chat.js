@@ -24,14 +24,14 @@ function loadChatHistory() {
             if (!data.chat_dates || data.chat_dates.length === 0) {
                 $("#chat-history").append("<li class='py-1'>No chat history available.</li>");
             } else {
-                let today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+                let today = new Date().toISOString().split('T')[0]; 
                 data.chat_dates.forEach(date => {
-                    // Check if the date is today's date and display "DATE TODAY"
                     let displayDate = (date === today) ? "DATE TODAY" : date;
                     $("#chat-history").append(`<li class="py-1 hover:text-white cursor-pointer chat-date" data-date="${date}">${displayDate}</li>`);
                 });
             }
 
+            // Hide the spinner after loading the chat history
             $("#spinner").hide();
         },
         error: function () {
@@ -40,6 +40,7 @@ function loadChatHistory() {
         }
     });
 }
+
 
 // Click event for fetching chats on specific date
 $(document).on("click", ".chat-date", function () {
