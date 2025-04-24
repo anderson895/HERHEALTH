@@ -72,42 +72,43 @@
 
     
         
-        <!-- Modal Background -->
-<div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display:none;">
+       <!-- Modal Background -->
+<div id="settings-modal" class="fixed inset-0 bg-[#40414F] bg-opacity-75 flex items-center justify-center z-50" style="display:none;">
     <!-- Modal Box -->
-    <div class="bg-white text-black rounded-lg p-6 w-1/2 max-w-md">
-        <h2 class="text-xl font-bold mb-4">Change Password</h2>
+    <div class="bg-[#565869] text-white rounded-lg p-6 w-1/2 max-w-md">
+        <h2 class="text-2xl font-bold mb-4">Change Password</h2>
 
         <form id="change-password-form" class="space-y-4">
 
             <div class="relative">
-                <input type="password" id="current-password" name="current-password" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                <label for="current-password" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">
+                <input type="password" id="current-password" name="current-password" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-[#10A37F] peer" placeholder=" " />
+                <label for="current-password" class="absolute text-sm text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-[#565869] px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-[#10A37F]">
                     Current Password
                 </label>
             </div>
 
             <div class="relative">
-                <input type="password" id="new-password" name="new-password" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                <label for="new-password" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">
+                <input type="password" id="new-password" name="new-password" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-[#10A37F] peer" placeholder=" " />
+                <label for="new-password" class="absolute text-sm text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-[#565869] px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-[#10A37F]">
                     New Password
                 </label>
             </div>
 
             <div class="relative">
-                <input type="password" id="confirm-password" name="confirm-password" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                <label for="confirm-password" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">
+                <input type="password" id="confirm-password" name="confirm-password" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-[#10A37F] peer" placeholder=" " />
+                <label for="confirm-password" class="absolute text-sm text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-[#565869] px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-[#10A37F]">
                     Confirm New Password
                 </label>
             </div>
 
             <div class="text-right">
-                <button type="submit" id="btnUpdatePassword" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-blue-700">Save</button>
-                <button type="button" id="close-settings" class="ml-2 px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600">Cancel</button>
+                <button type="submit" id="btnUpdatePassword" class="px-4 py-2 bg-[#10A37F] text-white rounded hover:bg-[#1A8D6E] transition duration-300">Save</button>
+                <button type="button" id="close-settings" class="ml-2 px-4 py-2 bg-[#565869] text-white rounded hover:bg-[#66687A] transition duration-300">Cancel</button>
             </div>
         </form>
     </div>
 </div>
+
 
 
 {% include 'components/pageSpinner.html' %}      
