@@ -9,10 +9,34 @@ class User(Database):
         """Initializes the User class and ensures the database connection is established."""
         super().__init__()
 
+    def check_and_update_password(self, user_id, currentpassword, newpassword):
+        result = self.fetch_one('SELECT password FROM "user" WHERE id = %s', (user_id,))
+        
+        if result is None:
+            return False  
+        
+        stored_password_hash = result['password']
+        current_password_hash = hashlib.sha256(currentpassword.encode()).hexdigest()
+
+        # Check if current password is correct
+        if stored_password_hash != current_password_hash:
+            return False  # Current password is incorrect
+
+        # Hash the new password
+        new_password_hash = hashlib.sha256(newpassword.encode()).hexdigest()
+
+        # Update the password in the database
+        self.execute_query('UPDATE "user" SET password = %s WHERE id = %s', (new_password_hash, user_id))
+
+        return True  # Password updated successfully
+
+
     def email_exists(self, email):
         """Checks if the email already exists in the database."""
         result = self.fetch_one('SELECT email FROM "user" WHERE email = %s', (email,))
         return result is not None  # Returns True if email exists
+
+
     
     def hash_password(self, password):
         """Hashes the password securely using SHA256 (consider bcrypt or Argon2 for better security)."""

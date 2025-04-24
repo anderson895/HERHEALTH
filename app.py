@@ -24,6 +24,24 @@ app.config['MAIL_DEFAULT_SENDER'] = ('HERHEALTH', 'angeladeniseflores199@gmail.c
 
 mail = Mail(app)
 
+@app.route('/check_password', methods=['POST'])
+def check_password():
+    if 'id' not in session:
+        return jsonify({"error": "User not logged in"}), 401 
+
+    user_id = session['id']
+    currentpassword = request.json.get('currentpassword') 
+    newpassword = request.json.get('newpassword') 
+
+    if not currentpassword:
+        return jsonify({"error": "Current password not provided"}), 400
+
+    user = User()
+    is_correct = user.check_and_update_password(user_id, currentpassword,newpassword)
+
+    return jsonify({"correct": is_correct})
+
+
 
 @app.route('/get_chats', methods=['GET'])
 def get_chats_record():

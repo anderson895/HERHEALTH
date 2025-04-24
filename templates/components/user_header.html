@@ -1,3 +1,7 @@
+<!-- {% for key, value in session.items() %}
+<li><strong>{{ key }}:</strong> {{ value }}</li>
+{% endfor %} -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +10,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/png" href="/static/assets/images/logo.jpeg">
     <link rel="stylesheet" href="/static/css/chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/css/alertify.css" integrity="sha512-MpdEaY2YQ3EokN6lCD6bnWMl5Gwk7RjBbpKLovlrH6X+DRokrPRAF3zQJl1hZUiLXfo2e9MrOt+udOnHCAmi5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/alertify.min.js" integrity="sha512-JnjG+Wt53GspUQXQhc+c4j8SBERsgJAoHeehagKHlxQN+MtCCmFDghX9/AcbkkNRZptyZU4zC8utK59M5L45Iw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <title>HERHEALTH</title>
 </head>
@@ -54,7 +62,7 @@
                 </button>
                 <div id="user-dropdown" class="hidden absolute bottom-12 left-0 w-full bg-gray-700 rounded shadow-lg">
                     <ul>
-                        <li class="py-2 px-4 hover:bg-gray-600 cursor-pointer">Settings</li>
+                        <li id="ShowSettingModal" class="py-2 px-4 hover:bg-gray-600 cursor-pointer">Settings</li>
                         <li class="py-2 px-4 hover:bg-gray-600 cursor-pointer"><a href="/logout">Logout</a></li>
                     </ul>
                 </div>
@@ -64,7 +72,44 @@
 
     
         
-        
+        <!-- Modal Background -->
+<div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display:none;">
+    <!-- Modal Box -->
+    <div class="bg-white text-black rounded-lg p-6 w-1/2 max-w-md">
+        <h2 class="text-xl font-bold mb-4">Change Password</h2>
+
+        <form id="change-password-form" class="space-y-4">
+
+            <div class="relative">
+                <input type="password" id="current-password" name="current-password" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+                <label for="current-password" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">
+                    Current Password
+                </label>
+            </div>
+
+            <div class="relative">
+                <input type="password" id="new-password" name="new-password" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+                <label for="new-password" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">
+                    New Password
+                </label>
+            </div>
+
+            <div class="relative">
+                <input type="password" id="confirm-password" name="confirm-password" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+                <label for="confirm-password" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">
+                    Confirm New Password
+                </label>
+            </div>
+
+            <div class="text-right">
+                <button type="submit" id="btnUpdatePassword" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-blue-700">Save</button>
+                <button type="button" id="close-settings" class="ml-2 px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 {% include 'components/pageSpinner.html' %}      
 
   

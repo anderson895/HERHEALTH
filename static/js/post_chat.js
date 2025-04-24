@@ -5,6 +5,25 @@ $(document).ready(function () {
         // Rotate the arrow icon
         $('#toggle-icon').toggleClass('rotate-180');
     });
+
+
+    $("#ShowSettingModal").click(function (e) { 
+        e.preventDefault();
+       
+        $("#settings-modal").fadeIn();
+    });
+    
+    $("#close-settings").click(function (e) { 
+        $("#settings-modal").fadeOut();
+    });
+
+     // Close Modal when clicking outside the modal content
+   $("#settings-modal").click(function(event) {
+        if ($(event.target).is("#settings-modal")) {
+            $("#settings-modal").fadeOut();
+        }
+    });
+
 });
 
 

@@ -56,6 +56,65 @@ $(document).ready(function () {
     });
 
 
+
+
+
+    $("#change-password-form").submit(function (e) {
+        e.preventDefault();
+
+
+        $('#spinner').show();
+
+        let newpassword = $.trim($("#new-password").val());
+        let confirmpassword = $.trim($("#confirm-password").val());
+        let currentpassword = $.trim($("#current-password").val());
+
+
+        if (newpassword !== confirmpassword) {
+            alertify.error("Passwords do not match.");
+            $('#spinner').hide();
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/check_password",
+            contentType: "application/json",
+            data: JSON.stringify({ currentpassword: currentpassword,newpassword:newpassword }), 
+            success: function (response) {
+                $('#spinner').hide();
+                $('#btnUpdatePassword').prop('disabled', false);
+        
+                if (response.correct) {
+                    alertify.success("Update Successfully.");
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+
+                } else {
+                    alertify.error("Incorrect password.");
+                }
+            },
+            error: function (xhr) {
+                $('#spinner').hide();
+                $('#btnUpdatePassword').prop('disabled', false);
+                alertify.error("Error checking password.");
+            }
+        });
+        
+
+        console.log("click");
+
+        // var formData = {
+        //     currentpassword: currentpassword,
+        //     newpassword: newpassword,
+        //     confirmpassword: confirmpassword
+        // };
+
+
+       
+    });
+
     
 
     $("#frmCreateAccount").submit(function (e) {
