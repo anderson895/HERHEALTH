@@ -6,6 +6,10 @@
 
 <!-- Main Content -->
 <main class="w-full flex flex-col items-center justify-center p-4 min-h-screen text-white">
+
+
+    
+
     <h2 class="text-2xl font-bold mb-4">What can I help with?</h2>
     <div class="w-full max-w-full lg:max-w-lg"> <!-- Adjusted max-width -->
         <div class="w-full max-w-full lg:max-w-lg">
@@ -29,9 +33,15 @@
                     </button>
                 </div>
             </div>
-
+            <!-- Toggle Button -->
+            <div class="flex justify-end mt-1">
+                <button id="toggle-suggestions" class="text-sm text-gray-300 hover:text-white flex items-center gap-1">
+                    <span class="material-icons transform transition-transform duration-300" id="toggle-icon">expand_more</span>
+                    Suggestions
+                </button>
+            </div>
             <!-- Suggestions Section -->
-            <div class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-1 lg:grid-cols-2"> <!-- Make it responsive -->
+            <div id="suggestions-section" class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-1 lg:grid-cols-2"> <!-- Make it responsive -->
                 <button class="suggestion-btn bg-[#565869] hover:bg-[#66687A] text-white py-2 px-4 rounded-md shadow-md" data-suggestion="Why do I get UTIs often?">Why do I get UTIs often?</button>
                 <button class="suggestion-btn bg-[#565869] hover:bg-[#66687A] text-white py-2 px-4 rounded-md shadow-md" data-suggestion="What causes miscarriage in early pregnancy?">What causes miscarriage in early pregnancy?</button>
                 <button class="suggestion-btn bg-[#565869] hover:bg-[#66687A] text-white py-2 px-4 rounded-md shadow-md" data-suggestion="What are the best vitamins for menopause?">What are the best vitamins for menopause?</button>

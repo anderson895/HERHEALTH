@@ -1,3 +1,13 @@
+$(document).ready(function () {
+    $('#toggle-suggestions').click(function () {
+        $('#suggestions-section').slideToggle('fast');
+
+        // Rotate the arrow icon
+        $('#toggle-icon').toggleClass('rotate-180');
+    });
+});
+
+
 
 
 // Handle Enter key press
