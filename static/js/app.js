@@ -68,14 +68,19 @@ $(document).ready(function () {
         let newpassword = $.trim($("#new-password").val());
         let confirmpassword = $.trim($("#confirm-password").val());
         let currentpassword = $.trim($("#current-password").val());
-
-
+        
+        if (newpassword === "") {
+            alertify.error("New password cannot be empty.");
+            $('#spinner').hide();
+            return;
+        }
+        
         if (newpassword !== confirmpassword) {
             alertify.error("Passwords do not match.");
             $('#spinner').hide();
             return;
         }
-
+        
         $.ajax({
             type: "POST",
             url: "/check_password",
