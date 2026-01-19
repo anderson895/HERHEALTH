@@ -3,7 +3,6 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from database import Database
 import json
-
 class User(Database):
     def __init__(self):
         """Initializes the User class and ensures the database connection is established."""
