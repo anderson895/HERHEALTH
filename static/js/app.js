@@ -176,7 +176,8 @@ $(document).ready(function () {
             type: "POST",
             url: "/createAccount",
             contentType: "application/json",
-            data: JSON.stringify(formData), // Convert object to JSON
+            data: JSON.stringify(formData),
+
             success: function (response) {
                 $('#spinner').hide();
                 $('#btnCreateAccount').prop('disabled', false);
@@ -190,7 +191,16 @@ $(document).ready(function () {
                     alertify.error(response.message);
                 }
             },
+
+            error: function (xhr, status, error) {
+                $('#spinner').hide();
+                $('#btnCreateAccount').prop('disabled', false);
+
+                console.error("AJAX Error:", xhr.responseText);
+                alertify.error("Server Error: " + xhr.status);
+            }
         });
+
     });
 
 
