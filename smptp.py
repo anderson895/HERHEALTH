@@ -6,8 +6,8 @@ from email.mime.multipart import MIMEMultipart
 # Email Configuration
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-EMAIL_SENDER = "angeladeniseflores199@gmail.com"  # Replace with your email
-EMAIL_PASSWORD = "rpbm yjls katl wcrt"  # Replace with your generated app password
+EMAIL_SENDER = "dhanleonardogomezalfonso@gmail.com"  # Replace with your email
+EMAIL_PASSWORD = "isqjpeocrjyuueti"  # Replace with your generated app password
 
 # Generate OTP
 otp = random.randint(100000, 999999)
