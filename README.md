@@ -51,7 +51,7 @@ python app.py
 - Ensure all dependencies are properly installed before running migrations
 
 
-## For Beta Testing Purposes
+## For Testing Purposes
 username: test123@gmail.com
 
 password:
