@@ -49,3 +49,10 @@ python app.py
 ## Troubleshooting
 - If migration fails, check your database connection settings
 - Ensure all dependencies are properly installed before running migrations
+
+
+## For Beta Testing Purposes
+username: test123@gmail.com
+
+password:
+test123
